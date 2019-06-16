@@ -7,6 +7,11 @@ namespace SBU_API.Dtos
 {
     public class UserDto
     {
+        public UserDto()
+        {
+            Collection = new List<MonsterDto>();
+        }
+        public int Id { get; set; }
         public String Name { get; set; }
         public String Email { get; set; }
         public DateTime JoinDate { get; set; }

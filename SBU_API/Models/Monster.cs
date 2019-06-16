@@ -25,7 +25,7 @@ namespace SBU_API.Models
         public List<String> ConditionImmunities { get; set; } 
         public List<String> Vulnerabilities { get; set; } 
         public Dictionary<String, int> Skills { get; set; } 
-        public String Cr { get; set; }
+        public String ChallengeRating { get; set; }
         public List<Trait> Traits { get; set; }
         public List<Action> Actions { get; set; }
         public int LegendaryAmount { get; set; }
@@ -34,5 +34,7 @@ namespace SBU_API.Models
         public DateTime Created { get; set; }
         public DateTime lastUpdated { get; set; }
         public ICollection<MonsterUser> MonsterUsers { get; set; }
+
+        
     }
 }

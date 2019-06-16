@@ -7,6 +7,7 @@ namespace SBU_API.Dtos
 {
     public class ActionDto
     {
+        public int Id { get; set; }
         public String Name { get; set; }
         public String Type { get; set; }
         public String Description { get; set; }

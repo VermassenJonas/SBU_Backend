@@ -7,6 +7,7 @@ namespace SBU_API.Dtos
 {
     public class StatlineDto
     {
+        public int Id { get; set; }
         public int STR { get; set; }
         public int DEX { get; set; }
         public int CON { get; set; }

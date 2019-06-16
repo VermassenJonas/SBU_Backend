@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SBU_API.Data;
 using SBU_API.Data.Repositories;
+using SBU_API.Mappers;
 using SBU_API.Models;
 
 namespace SBU_API
@@ -36,6 +37,9 @@ namespace SBU_API
 
             services.AddScoped<SbuDataInitializer>();
             services.AddScoped<MonsterRepository, MonsterRepositoryImpl>();
+            services.AddScoped<UserRepository, UserRepositoryImpl>();
+            services.AddScoped<MonsterMapper, MonsterMapper>();
+            services.AddScoped<UserMapper, UserMapper>();
 
             services.AddOpenApiDocument(c => {
                 c.DocumentName = "apidocs";

@@ -7,7 +7,9 @@ namespace SBU_API.Dtos
 {
     public class TraitDto
     {
+        public int Id { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
     }
+
 }

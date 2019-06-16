@@ -7,6 +7,22 @@ namespace SBU_API.Dtos
 {
     public class MonsterDto
     {
+        public MonsterDto()
+        {
+            Languages = new List<string>();
+            Tags = new List<string>();
+            Resistances = new List<string>();
+            Immunities = new List<string>();
+            ConditionImmunities = new List<string>();
+            Vulnerabilities = new List<string>();
+            Traits = new List<TraitDto>();
+            Actions = new List<ActionDto>();
+            Speed = new Dictionary<string, int>();
+            Skills = new Dictionary<string, int>();
+            Stats = new StatlineDto();
+            Author = new UserDto();
+        }
+        public int Id { get; set; }
         public String Name { get; set; }
         public String Size { get; set; }
         public String MonsterType { get; set; }
@@ -24,7 +40,7 @@ namespace SBU_API.Dtos
         public List<String> ConditionImmunities { get; set; }
         public List<String> Vulnerabilities { get; set; }
         public Dictionary<String, int> Skills { get; set; }
-        public String Cr { get; set; }
+        public String ChallengeRating { get; set; }
         public List<TraitDto> Traits { get; set; }
         public List<ActionDto> Actions { get; set; }
         public int LegendaryAmount { get; set; }
