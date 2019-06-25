@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SBU_API.Data.DbConfig;
 using SBU_API.Models;
 using System;
@@ -8,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace SBU_API.Data
 {
-    public class SbuDbContext : DbContext
+    public class SbuDbContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Monster> Monsters { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> SbuUsers { get; set; }
 
         public SbuDbContext(DbContextOptions<SbuDbContext> options)
             : base(options)

@@ -12,5 +12,6 @@ namespace SBU_API.Models
         public String Email { get; set; }
         public DateTime JoinDate { get; set; }
         public ICollection<MonsterUser> MonsterUsers { get; set; }
+
     }
 }

@@ -32,7 +32,7 @@ namespace SBU_API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<SbuDbContext>(options =>
-              options.UseMySQL(Configuration.GetConnectionString("SbuContext")));
+              options.UseMySql(Configuration.GetConnectionString("SbuContext")));
 
             services.AddScoped<SbuDataInitializer>();
             services.AddScoped<MonsterRepository, MonsterRepositoryImpl>();

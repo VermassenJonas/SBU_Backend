@@ -9,7 +9,7 @@ namespace SBU_API.Mappers
 {
     public class MonsterMapper
     {
-        
+
 
         public MonsterDto mapMonsterToMonsterDto(Monster monster)
         {
@@ -18,24 +18,23 @@ namespace SBU_API.Mappers
             monsterDto.Name = monster.Name;
             monsterDto.Size = monster.Size;
             monsterDto.MonsterType = monster.MonsterType;
-            monsterDto.Languages = monster.Languages;
-            monsterDto.Tags = monster.Tags;
+            if (monsterDto.Languages != null) monsterDto.Languages = monster.Languages;
+            if (monsterDto.Tags != null) monsterDto.Tags = monster.Tags;
             monsterDto.Alignment = monster.Alignment;
             monsterDto.ArmourClass = monster.ArmourClass;
             monsterDto.ArmourType = monster.ArmourType;
             monsterDto.Hitpoints = monster.Hitpoints;
             monsterDto.HpFormula = monster.HpFormula;
-            monsterDto.Speed = monster.Speed;
-            monsterDto.Stats = mapStatlineToStatlineDto(monster.Stats);
-            monsterDto.Resistances = monster.Resistances;
-            monsterDto.Immunities = monster.Immunities;
-            monsterDto.ConditionImmunities = monster.ConditionImmunities;
-            monsterDto.Vulnerabilities = monster.Vulnerabilities;
-            monsterDto.Skills = monster.Skills;
+            if (monsterDto.Speed != null) monsterDto.Speed = monster.Speed;
+            if (monsterDto.Stats != null) monsterDto.Stats = mapStatlineToStatlineDto(monster.Stats);
+            if (monsterDto.Resistances != null) monsterDto.Resistances = monster.Resistances;
+            if (monsterDto.Immunities != null) monsterDto.Immunities = monster.Immunities;
+            if (monsterDto.ConditionImmunities != null) monsterDto.ConditionImmunities = monster.ConditionImmunities;
+            if (monsterDto.Vulnerabilities != null) monsterDto.Vulnerabilities = monster.Vulnerabilities;
+            if (monsterDto.Skills != null) monsterDto.Skills = monster.Skills;
             monsterDto.ChallengeRating = monster.ChallengeRating;
-            monsterDto.Traits = monster.Traits.Select(t => mapTraitToTraitDto(t)).ToList();
-            monsterDto.Actions = monster.Actions.Select(a => mapActionToActionDto(a)).ToList();
-            monsterDto.LegendaryAmount = monster.LegendaryAmount;
+            if (monsterDto.Traits != null) monsterDto.Traits = monster.Traits.Select(t => mapTraitToTraitDto(t)).ToList();
+            if (monsterDto.Actions != null) monsterDto.Actions = monster.Actions.Select(a => mapActionToActionDto(a)).ToList();
             monsterDto.Fluff = monster.Fluff;
             monsterDto.Author = mapUserToUserDto(monster.Author);
             monsterDto.Created = monster.Created;
@@ -45,6 +44,7 @@ namespace SBU_API.Mappers
         public Monster mapMonsterDtoToMonster(MonsterDto monsterDto)
         {
             Monster monster = new Monster();
+            monster.Id = monsterDto.Id;
             monster.Name = monsterDto.Name;
             monster.Size = monsterDto.Size;
             monster.MonsterType = monsterDto.MonsterType;
@@ -65,7 +65,6 @@ namespace SBU_API.Mappers
             monster.ChallengeRating = monsterDto.ChallengeRating;
             monster.Traits = monsterDto.Traits.Select(t => mapTraitDtoToTrait(t)).ToList();
             monster.Actions = monsterDto.Actions.Select(a => mapActionDtoToAction(a)).ToList();
-            monster.LegendaryAmount = monsterDto.LegendaryAmount;
             monster.Fluff = monsterDto.Fluff;
             monster.Author = mapUserDtoToUser(monsterDto.Author);
             monster.Created = monsterDto.Created;

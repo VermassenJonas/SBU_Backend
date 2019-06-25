@@ -28,7 +28,6 @@ namespace SBU_API.Models
         public String ChallengeRating { get; set; }
         public List<Trait> Traits { get; set; }
         public List<Action> Actions { get; set; }
-        public int LegendaryAmount { get; set; }
         public String Fluff { get; set; }
         public User Author { get; set; }
         public DateTime Created { get; set; }

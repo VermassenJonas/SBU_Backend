@@ -45,19 +45,21 @@ namespace SBU_API.Controllers
         [HttpPost]
         public async Task<ActionResult<String>> CreateToken(LoginDto model)
         {
-            var user = await _userManager.FindByNameAsync(model.Email);
+            Console.WriteLine("checking login");
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user != null)
             {
                 var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
 
+                Console.WriteLine(result.Succeeded);
                 if (result.Succeeded)
                 {
                     string token = GetToken(user);
                     return Created("", token); //returns only the token                    
                 }
             }
-            return BadRequest();
+            return BadRequest("email-password combination does not exist");
         }
 
         /// <summary>
@@ -72,7 +74,7 @@ namespace SBU_API.Controllers
             IdentityUser idUser = new IdentityUser { UserName = model.Name, Email = model.Email };
             User user = new User { Email = model.Email, Name = model.Name, JoinDate = DateTime.Now };
             var result = await _userManager.CreateAsync(idUser, model.Password);
-
+            
             if (result.Succeeded)
             {
                 _userRepository.Add(user);

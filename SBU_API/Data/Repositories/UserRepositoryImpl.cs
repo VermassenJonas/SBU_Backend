@@ -15,7 +15,7 @@ namespace SBU_API.Data.Repositories
         public UserRepositoryImpl(SbuDbContext dbContext)
         {
             _context = dbContext;
-            _users = dbContext.Users;
+            _users = dbContext.SbuUsers;
         }
 
         public void Add(User user)

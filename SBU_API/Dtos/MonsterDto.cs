@@ -43,7 +43,6 @@ namespace SBU_API.Dtos
         public String ChallengeRating { get; set; }
         public List<TraitDto> Traits { get; set; }
         public List<ActionDto> Actions { get; set; }
-        public int LegendaryAmount { get; set; }
         public String Fluff { get; set; }
         public UserDto Author { get; set; }
         public DateTime Created { get; set; }
