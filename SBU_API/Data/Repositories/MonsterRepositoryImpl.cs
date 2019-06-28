@@ -46,7 +46,9 @@ namespace SBU_API.Data.Repositories
 
         public void Update(Monster monster)
         {
-            _monsters.Update(monster);
+            Monster oldMonster = GetById(monster.Id);
+            Delete(oldMonster);
+            Add(monster);
         }
     }
 }

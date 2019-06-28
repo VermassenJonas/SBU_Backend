@@ -31,8 +31,7 @@ namespace SBU_API.Models
         public String Fluff { get; set; }
         public User Author { get; set; }
         public DateTime Created { get; set; }
-        public DateTime lastUpdated { get; set; }
-        public ICollection<MonsterUser> MonsterUsers { get; set; }
+        public DateTime LastUpdated { get; set; }
 
         
     }

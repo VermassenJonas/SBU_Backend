@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -15,20 +16,24 @@ namespace SBU_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MonsterController : ControllerBase
     {
         private readonly MonsterRepository _monsterRepository;
+        private readonly UserRepository _userRepository;
         private readonly MonsterMapper _monsterMapper;
         private readonly UserManager<IdentityUser> _userManager;
-
+        private readonly UserMapper _userMapper;
 
         public MonsterController(MonsterRepository monsterRepository,
+                                UserRepository userRepository,
                                 UserManager<IdentityUser> userManager,
-                                MonsterMapper monsterMapper)
+                                MonsterMapper monsterMapper,
+                                UserMapper userMapper)
         {
+            _userMapper = userMapper;
             _userManager = userManager;
             _monsterRepository = monsterRepository;
+            _userRepository = userRepository;
             _monsterMapper = monsterMapper;
         }
 
@@ -41,26 +46,55 @@ namespace SBU_API.Controllers
         [HttpGet("{id}")]
         public ActionResult<MonsterDto> GetMonster(int id)
         {
-            return _monsterMapper.mapMonsterToMonsterDto(_monsterRepository.GetById(id));
+            Monster monster = _monsterRepository.GetById(id);
+            if (monster != null)
+            {
+                return _monsterMapper.mapMonsterToMonsterDto(monster);
+            }
+            else
+            {
+                return new MonsterDto();
+            }
         }
 
 
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
-        public ActionResult<MonsterDto> PostMonster()
+        public ActionResult<MonsterDto> PostMonster(MonsterDto monsterDto)
         {
-            Monster monster = new Monster();
+
+            Monster monster = _monsterMapper.mapMonsterDtoToMonster(monsterDto);
             _monsterRepository.Add(monster);
             _monsterRepository.SaveChanges();
+            User author = monster.Author;
+            author.addToCollection(monster);
+            _userRepository.Update(author);
+            _userRepository.SaveChanges();
+
             return _monsterMapper.mapMonsterToMonsterDto(monster);
         }
 
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("{id}")]
         public void PutMonster(int id, MonsterDto monsterDto)
         {
-            Console.WriteLine(monsterDto);
-            _monsterRepository.Update(_monsterMapper.mapMonsterDtoToMonster(monsterDto));
+
+            Monster monster = _monsterMapper.mapMonsterDtoToMonster(monsterDto);
+
+            _monsterRepository.Update(monster);
             _monsterRepository.SaveChanges();
+
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("collection/{userEmail}")]
+        public IEnumerable<MonsterDto> GetCollection(string userEmail)
+        {
+            User user = _userRepository.GetByEmail(userEmail);
+            UserDto userDto = _userMapper.mapUserToUserDto(user);
+            return userDto.Collection;
         }
 
 

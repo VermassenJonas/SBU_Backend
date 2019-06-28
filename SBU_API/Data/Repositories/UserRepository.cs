@@ -8,6 +8,7 @@ namespace SBU_API.Models
     public interface UserRepository
     {
         User GetById(int id);
+        User GetByEmail(string email);
         IEnumerable<User> getAll();
         void Add(User user);
         void Delete(User user);

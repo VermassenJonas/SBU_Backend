@@ -13,5 +13,55 @@ namespace SBU_API.Models
         public DateTime JoinDate { get; set; }
         public ICollection<MonsterUser> MonsterUsers { get; set; }
 
+        public User()
+        {
+            MonsterUsers = new List<MonsterUser>();
+        }
+
+        public void addToCollection(Monster monster)
+        {
+            MonsterUser mu = new MonsterUser()
+            {
+                Monster = monster,
+                MonsterId = monster.Id,
+                User = this,
+                UserId = this.Id
+            };
+            MonsterUsers.Add(mu);
+        }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            //       
+            // See the full list of guidelines at
+            //   http://go.microsoft.com/fwlink/?LinkID=85237  
+            // and also the guidance for operator== at
+            //   http://go.microsoft.com/fwlink/?LinkId=85238
+            //
+
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            else
+            {
+                if (Email.Equals(((User) obj).Email))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            
+            return Email.GetHashCode() * 31 + 47;
+        }
     }
 }

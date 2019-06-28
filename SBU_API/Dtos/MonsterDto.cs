@@ -17,8 +17,8 @@ namespace SBU_API.Dtos
             Vulnerabilities = new List<string>();
             Traits = new List<TraitDto>();
             Actions = new List<ActionDto>();
-            Speed = new Dictionary<string, int>();
-            Skills = new Dictionary<string, int>();
+            Speeds = new List<SpeedDto>();
+            Skills = new List<SkillDto>();
             Stats = new StatlineDto();
             Author = new UserDto();
         }
@@ -33,18 +33,19 @@ namespace SBU_API.Dtos
         public String ArmourType { get; set; }
         public int Hitpoints { get; set; }
         public String HpFormula { get; set; }
-        public Dictionary<String, int> Speed { get; set; }
+        public List<SpeedDto> Speeds { get; set; }
         public StatlineDto Stats { get; set; }
         public List<String> Resistances { get; set; }
         public List<String> Immunities { get; set; }
         public List<String> ConditionImmunities { get; set; }
         public List<String> Vulnerabilities { get; set; }
-        public Dictionary<String, int> Skills { get; set; }
+        public List<SkillDto> Skills { get; set; }
         public String ChallengeRating { get; set; }
         public List<TraitDto> Traits { get; set; }
         public List<ActionDto> Actions { get; set; }
         public String Fluff { get; set; }
         public UserDto Author { get; set; }
+        public string AuthorEmail { get; set; }
         public DateTime Created { get; set; }
         public DateTime lastUpdated { get; set; }
     }

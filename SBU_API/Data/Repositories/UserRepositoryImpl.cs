@@ -33,6 +33,18 @@ namespace SBU_API.Data.Repositories
             return _users;
         }
 
+        public User GetByEmail(string email)
+        {
+            return _users
+                .Include(user => user.MonsterUsers)
+                    .ThenInclude((MonsterUser mu) => mu.Monster)
+                        .ThenInclude(m => m.Stats)
+                .Include(user => user.MonsterUsers)
+                    .ThenInclude((MonsterUser mu) => mu.Monster)
+                        .ThenInclude(m => m.Author)
+            .FirstOrDefault(u => u.Email.Equals(email));
+        }
+
         public User GetById(int id)
         {
             return _users.Include(u => u.MonsterUsers).ThenInclude(monsterUsers => monsterUsers.Select(mu => mu.Monster)).ThenInclude(m => m.Stats).SingleOrDefault(u => u.Id == id);

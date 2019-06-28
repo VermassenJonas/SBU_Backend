@@ -9,7 +9,12 @@ namespace SBU_API.Mappers
 {
     public class MonsterMapper
     {
+        private readonly UserRepository _userRepository;
 
+        public MonsterMapper(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
         public MonsterDto mapMonsterToMonsterDto(Monster monster)
         {
@@ -18,27 +23,44 @@ namespace SBU_API.Mappers
             monsterDto.Name = monster.Name;
             monsterDto.Size = monster.Size;
             monsterDto.MonsterType = monster.MonsterType;
-            if (monsterDto.Languages != null) monsterDto.Languages = monster.Languages;
-            if (monsterDto.Tags != null) monsterDto.Tags = monster.Tags;
+            if (monster.Languages != null) monsterDto.Languages = monster.Languages;
+            if (monster.Tags != null) monsterDto.Tags = monster.Tags;
             monsterDto.Alignment = monster.Alignment;
             monsterDto.ArmourClass = monster.ArmourClass;
             monsterDto.ArmourType = monster.ArmourType;
             monsterDto.Hitpoints = monster.Hitpoints;
             monsterDto.HpFormula = monster.HpFormula;
-            if (monsterDto.Speed != null) monsterDto.Speed = monster.Speed;
-            if (monsterDto.Stats != null) monsterDto.Stats = mapStatlineToStatlineDto(monster.Stats);
-            if (monsterDto.Resistances != null) monsterDto.Resistances = monster.Resistances;
-            if (monsterDto.Immunities != null) monsterDto.Immunities = monster.Immunities;
-            if (monsterDto.ConditionImmunities != null) monsterDto.ConditionImmunities = monster.ConditionImmunities;
-            if (monsterDto.Vulnerabilities != null) monsterDto.Vulnerabilities = monster.Vulnerabilities;
-            if (monsterDto.Skills != null) monsterDto.Skills = monster.Skills;
+            if (monsterDto.Speeds != null) {
+                foreach (string speedName in monster.Speed.Keys)
+                {
+                    monsterDto.Speeds.Add(new SpeedDto() {
+                        SpeedName = speedName,
+                        SpeedValue = monster.Speed[speedName]
+                    });
+                }
+            }
+            if (monster.Stats != null) monsterDto.Stats = mapStatlineToStatlineDto(monster.Stats);
+            if (monster.Resistances != null) monsterDto.Resistances = monster.Resistances;
+            if (monster.Immunities != null) monsterDto.Immunities = monster.Immunities;
+            if (monster.ConditionImmunities != null) monsterDto.ConditionImmunities = monster.ConditionImmunities;
+            if (monster.Vulnerabilities != null) monsterDto.Vulnerabilities = monster.Vulnerabilities;
+            if (monster.Skills != null) {
+                foreach (string skillName in monster.Skills.Keys)
+                {
+                    monsterDto.Skills.Add(new SkillDto()
+                    {
+                        SkillName = skillName,
+                        SkillMod = monster.Skills[skillName]
+                    });
+                }
+            }
             monsterDto.ChallengeRating = monster.ChallengeRating;
-            if (monsterDto.Traits != null) monsterDto.Traits = monster.Traits.Select(t => mapTraitToTraitDto(t)).ToList();
-            if (monsterDto.Actions != null) monsterDto.Actions = monster.Actions.Select(a => mapActionToActionDto(a)).ToList();
+            if (monster.Traits != null) monsterDto.Traits = monster.Traits.Select(t => mapTraitToTraitDto(t)).ToList();
+            if (monster.Actions != null) monsterDto.Actions = monster.Actions.Select(a => mapActionToActionDto(a)).ToList();
             monsterDto.Fluff = monster.Fluff;
             monsterDto.Author = mapUserToUserDto(monster.Author);
             monsterDto.Created = monster.Created;
-            monsterDto.lastUpdated = monster.lastUpdated;
+            monsterDto.lastUpdated = monster.LastUpdated;
             return monsterDto;
         }
         public Monster mapMonsterDtoToMonster(MonsterDto monsterDto)
@@ -55,20 +77,45 @@ namespace SBU_API.Mappers
             monster.ArmourType = monsterDto.ArmourType;
             monster.Hitpoints = monsterDto.Hitpoints;
             monster.HpFormula = monsterDto.HpFormula;
-            monster.Speed = monsterDto.Speed;
+            monster.Speed = new Dictionary<string, int>();
             monster.Stats = mapStatlineDtoToStatline(monsterDto.Stats);
             monster.Resistances = monsterDto.Resistances;
             monster.Immunities = monsterDto.Immunities;
             monster.ConditionImmunities = monsterDto.ConditionImmunities;
             monster.Vulnerabilities = monsterDto.Vulnerabilities;
-            monster.Skills = monsterDto.Skills;
+            monster.Skills = new Dictionary<string, int>();
             monster.ChallengeRating = monsterDto.ChallengeRating;
             monster.Traits = monsterDto.Traits.Select(t => mapTraitDtoToTrait(t)).ToList();
             monster.Actions = monsterDto.Actions.Select(a => mapActionDtoToAction(a)).ToList();
             monster.Fluff = monsterDto.Fluff;
-            monster.Author = mapUserDtoToUser(monsterDto.Author);
             monster.Created = monsterDto.Created;
-            monster.lastUpdated = monsterDto.lastUpdated;
+            monster.LastUpdated = monsterDto.lastUpdated;
+            foreach (SpeedDto speed in monsterDto.Speeds)
+            {
+                monster.Speed.Add(speed.SpeedName, speed.SpeedValue);
+            }
+            foreach (SkillDto skill in monsterDto.Skills)
+            {
+                monster.Skills.Add(skill.SkillName, skill.SkillMod);
+            }
+
+
+            if(monsterDto.Author == null || monsterDto.Author.Email == null || monsterDto.Author.Email.Equals(""))
+            {
+                User author = _userRepository.GetByEmail(monsterDto.AuthorEmail);
+                if(author != null)
+                {
+                    monster.Author = author;
+                }
+                else
+                {
+                    throw new Exception("no author present on submitted monster");
+                }
+            }
+            else
+            {
+                monster.Author = mapUserDtoToUser(monsterDto.Author);
+            }
             return monster;
         }
 

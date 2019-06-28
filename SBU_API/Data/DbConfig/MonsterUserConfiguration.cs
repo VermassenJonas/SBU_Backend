@@ -13,8 +13,7 @@ namespace SBU_API.Data.DbConfig
         public void Configure(EntityTypeBuilder<MonsterUser> builder)
         {
             builder.ToTable("monster_user");
-            builder.HasKey(mu => new { mu.MonsterId, mu.UserId });
-            builder.HasOne(mu => mu.Monster).WithMany(m => m.MonsterUsers).HasForeignKey(mu => mu.MonsterId);
+            builder.HasKey(mu => new { mu.MonsterId, mu.UserId });  
             builder.HasOne(mu => mu.User).WithMany(u => u.MonsterUsers).HasForeignKey(mu => mu.UserId);
         }
     }
