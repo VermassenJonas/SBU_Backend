@@ -88,14 +88,7 @@ namespace SBU_API.Controllers
 
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet("collection/{userEmail}")]
-        public IEnumerable<MonsterDto> GetCollection(string userEmail)
-        {
-            User user = _userRepository.GetByEmail(userEmail);
-            UserDto userDto = _userMapper.mapUserToUserDto(user);
-            return userDto.Collection;
-        }
+        
 
 
     }

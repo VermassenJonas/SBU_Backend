@@ -29,6 +29,10 @@ namespace SBU_API.Models
             };
             MonsterUsers.Add(mu);
         }
+        public void removeFromCollection(Monster monster)
+        {
+            MonsterUsers = MonsterUsers.Where(mu => mu.Monster.Id != monster.Id).ToList();
+        }
 
         // override object.Equals
         public override bool Equals(object obj)
